@@ -10,8 +10,8 @@ CONFIG += c++17 warn_on
 
 DEFINES += \
     KEYBOARD_HANDLER_DEBUG \
-    #DISABLE_CUDA \
-    #DISABLE_SIMD
+    DISABLE_CUDA \
+    DISABLE_SIMD
 
 CONFIG(debug, debug|release) {
   DEFINES += \
@@ -50,6 +50,7 @@ win32 {
 
 linux {
   linux-g++*{
+    QMAKE_CXXFLAGS += -fpermissive
   }
 
   linux-clang*{
@@ -423,7 +424,21 @@ contains(DEFINES, DISABLE_SIMD) {
     }
 
     linux-clang*{
+      AVX_FLAGS = -mavx
+      AVX_OUT = -o${QMAKE_FILE_OUT}
     }
+
+    SOURCES_AVX += \
+      Compute/CpuFunctionAVX.cpp
+    avx_compiler.name = avx_compiler
+    avx_compiler.input = SOURCES_AVX
+    avx_compiler.dependency_type = TYPE_C
+    avx_compiler.variable_out = OBJECTS
+    avx_compiler.output = \
+      ${QMAKE_VAR_OBJECTS_DIR}${QMAKE_FILE_IN_BASE}$${first(QMAKE_EXT_OBJ)}
+    avx_compiler.commands = $${QMAKE_CXX} $(CXXFLAGS) $${AVX_FLAGS} \
+      $(INCPATH) -c ${QMAKE_FILE_IN} $${AVX_OUT}
+    QMAKE_EXTRA_COMPILERS += avx_compiler
   }
 }
 
