@@ -11,7 +11,7 @@ CONFIG += c++17 warn_on
 DEFINES += \
     KEYBOARD_HANDLER_DEBUG \
     DISABLE_CUDA \
-    DISABLE_SIMD
+    #DISABLE_SIMD
 
 CONFIG(debug, debug|release) {
   DEFINES += \
@@ -421,6 +421,8 @@ contains(DEFINES, DISABLE_SIMD) {
 
   linux {
     linux-g++*{
+      AVX_FLAGS = -mavx
+      AVX_OUT = -o${QMAKE_FILE_OUT}
     }
 
     linux-clang*{
