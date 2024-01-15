@@ -55,3 +55,7 @@ compile_commands.json
 _tmp
 
 msvc_make.bat
+
+#generated protobuf files
+*.pb.cc
+*.pb.h
