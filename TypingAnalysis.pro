@@ -10,8 +10,8 @@ CONFIG += c++17 warn_on
 
 DEFINES += \
     KEYBOARD_HANDLER_DEBUG \
-    #DISABLE_CUDA \
-    #DISABLE_SIMD
+    DISABLE_CUDA \
+    DISABLE_SIMD
 
 CONFIG(debug, debug|release) {
   DEFINES += \
@@ -48,6 +48,7 @@ win32 {
 
 linux {
   linux-g++*{
+      QMAKE_CXXFLAGS += -fpermissive
   }
 
   linux-clang*{
@@ -92,6 +93,32 @@ win32-msvc*{
   }
 }
 DEFINES += $$CONAN_DEFINES_BOOST
+
+#protobuf configuration
+
+PROTO_FILES += Proto/test.proto
+
+INCLUDEPATH += $$CONAN_INCLUDEPATH_PROTOBUF
+LIBS += $$CONAN_LIBDIRS_PROTOBUF $$CONAN_LIBS_PROTOBUF
+
+PROTOC_BIN = $$CONAN_BINDIRS_PROTOBUF/protoc
+
+protobuf_decl.name = protobuf headers
+protobuf_decl.input = PROTO_FILES
+protobuf_decl.output = Proto/${QMAKE_FILE_BASE}.pb.h
+protobuf_decl.commands = $$PROTOC_BIN --cpp_out=${QMAKE_FILE_IN_PATH} --proto_path=${QMAKE_FILE_IN_PATH} ${QMAKE_FILE_NAME}
+protobuf_decl.variable_out = HEADERS
+QMAKE_EXTRA_COMPILERS += protobuf_decl
+ 
+protobuf_impl.name = protobuf sources
+protobuf_impl.input = PROTO_FILES
+protobuf_impl.output = Proto/${QMAKE_FILE_BASE}.pb.cc
+protobuf_impl.depends = Proto/${QMAKE_FILE_BASE}.pb.h
+protobuf_impl.commands = $$escape_expand(\n)
+protobuf_impl.variable_out = SOURCES
+QMAKE_EXTRA_COMPILERS += protobuf_impl
+
+
 
 
 HEADERS += \
@@ -522,6 +549,8 @@ contains(DEFINES, DISABLE_SIMD) {
     QMAKE_EXTRA_COMPILERS += cuda
   }
 }
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
