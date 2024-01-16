@@ -1,9 +1,5 @@
 namespace NFbsSession;
 
-struct STime {
-  microseconds:long;
-}
-
 struct SLabelData {
   low_symbol:ushort;
   high_symbol:ushort;
@@ -20,8 +16,8 @@ table TKeyEvent {
   key_id:ubyte;
   key_label:SLabelData;
   key_text:SKeyTextData;
-  pressing_time:STime;
-  releasing_time:STime;
+  pressing_time_ms:long;
+  releasing_time_ms:long;
 }
 
 table TSession {

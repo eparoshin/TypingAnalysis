@@ -3,11 +3,14 @@
 
 #include "KeyFlags.h"
 #include "Keyboard/RawKeyEvent.h"
+#include "FlatBuffers/seance_generated.h"
 
 #include <boost/serialization/access.hpp>
 
 namespace NSApplication {
 namespace NSKernel {
+
+using NFbsSession::TKeyEventT;
 
 class CKeyEvent {
   using CKeyPosition = NSKeyboard::CKeyPosition;
@@ -24,6 +27,8 @@ public:
             CKeyFlags Flags = CKeyFlagsEnum::BasicKey);
   CKeyEvent(const CKeyPressing& PressingEvent,
             CKeyFlags Flags = CKeyFlagsEnum::BasicKey);
+
+  explicit CKeyEvent(const TKeyEventT& KeyEventTable);
 
   void setReleasingTime(CTime ReleasingTime);
 
@@ -66,6 +71,8 @@ public:
 
   bool isDeadKey() const;
   bool isSilentDeadKey() const;
+
+  static std::unique_ptr<TKeyEventT> createFbs(const CKeyEvent& from);
 
 private:
   friend boost::serialization::access;

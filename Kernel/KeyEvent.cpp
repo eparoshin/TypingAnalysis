@@ -166,5 +166,17 @@ bool CKeyEvent::isSilentDeadKey() const {
   return isDeadKey() && !hasText();
 }
 
+std::unique_ptr<TKeyEventT> CKeyEvent::createFbs(const CKeyEvent& from) {
+  TKeyEventT event;
+  return std::make_unique<TKeyEventT>(
+    from.KeyPosition_,
+    from.KeyID_,
+    CLabelData::createFbs(from.KeyLabel_),
+    CKeyTextData::createFbs(from.KeyText_),
+    from.PressingTime_.toMicroSecondsI(),
+    from.ReleasingTime_.toMicroSecondsI()
+  );
+}
+
 } // namespace NSKernel
 } // namespace NSApplication

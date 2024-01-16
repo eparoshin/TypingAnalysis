@@ -107,7 +107,7 @@ for(fbs, FLATBUFFERS_FILES) {
     flatbuffers.name = flatc $$fbs
     flatbuffers.input = FLATBUFFERS_FILES
     flatbuffers.output = FlatBuffers/${QMAKE_FILE_BASE}_generated.h
-    flatbuffers.commands = $$FLATBUFFERS_PATH -o ${QMAKE_FILE_OUT_PATH}/ --cpp $$fbs
+    flatbuffers.commands = $$FLATBUFFERS_PATH -o ${QMAKE_FILE_OUT_PATH}/ --gen-object-api --cpp $$fbs
     flatbuffers.CONFIG += no_link target_predeps
     QMAKE_EXTRA_COMPILERS += flatbuffers
     # QMAKE_EXTRA_TARGETS += flatbuffers

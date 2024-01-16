@@ -1,6 +1,8 @@
 #ifndef NSAPPLICATION_NSKEYBOARD_CKEYTEXTDATA_H
 #define NSAPPLICATION_NSKEYBOARD_CKEYTEXTDATA_H
 
+#include "FlatBuffers/seance_generated.h"
+
 #include <QChar>
 #include <boost/serialization/access.hpp>
 
@@ -18,10 +20,14 @@ void serialize(Archive& arch, QChar& ch, const unsigned int) {
 namespace NSApplication {
 namespace NSKeyboard {
 
+using NFbsSession::SLabelData;
+
 struct CLabelData {
   QChar LowSymbol;
   QChar HighSymbol;
   unsigned char Size;
+
+  static std::unique_ptr<SLabelData> createFbs(const CLabelData& from);
 
 private:
   friend boost::serialization::access;
@@ -33,9 +39,14 @@ private:
   }
 };
 
+using NFbsSession::SKeyTextData;
+
 struct CKeyTextData {
-  QChar Symbol[2];
+  static constexpr size_t SymbolSize = 2;
+  QChar Symbol[SymbolSize];
   unsigned char Size;
+
+  static std::unique_ptr<SKeyTextData> createFbs(const CKeyTextData& from);
 
 private:
   friend boost::serialization::access;
