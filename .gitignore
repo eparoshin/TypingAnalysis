@@ -56,6 +56,5 @@ _tmp
 
 msvc_make.bat
 
-#generated protobuf files
-*.pb.cc
-*.pb.h
+#generated flatbuf files
+*_generated.h

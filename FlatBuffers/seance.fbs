@@ -1,0 +1,35 @@
+namespace NFbsSession;
+
+struct STime {
+  microseconds:long;
+}
+
+struct SLabelData {
+  low_symbol:ushort;
+  high_symbol:ushort;
+  size:ubyte;
+}
+
+struct SKeyTextData {
+  symbol:[ushort:2];
+  size:ubyte;
+}
+
+table TKeyEvent {
+  key_position:ubyte;
+  key_id:ubyte;
+  key_label:SLabelData;
+  key_text:SKeyTextData;
+  pressing_time:STime;
+  releasing_time:STime;
+}
+
+table TSession {
+  key_events:[TKeyEvent];
+}
+
+table TSeance {
+  sessions:[TSession];
+}
+
+root_type TSeance;
