@@ -2,7 +2,7 @@
 boost/1.78.0
 tbb/2020.3
 qwt/6.2.0
-protobuf/3.21.12
+flatbuffers/23.5.26
 
 [options]
 tbb:shared=False
