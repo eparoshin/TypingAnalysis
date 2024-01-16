@@ -168,14 +168,14 @@ bool CKeyEvent::isSilentDeadKey() const {
 
 std::unique_ptr<TKeyEventT> CKeyEvent::createFbs(const CKeyEvent& from) {
   TKeyEventT event;
-  return std::make_unique<TKeyEventT>(
-    from.KeyPosition_,
-    from.KeyID_,
-    CLabelData::createFbs(from.KeyLabel_),
-    CKeyTextData::createFbs(from.KeyText_),
-    from.PressingTime_.toMicroSecondsI(),
-    from.ReleasingTime_.toMicroSecondsI()
-  );
+  event.key_position = from.KeyPosition_;
+  event.key_id = from.KeyID_;
+  event.key_label = CLabelData::createFbs(from.KeyLabel_);
+  event.key_text = CKeyTextData::createFbs(from.KeyText_);
+  event.pressing_time_ms = from.PressingTime_.toMicroSecondsI();
+  event.releasing_time_ms = from.ReleasingTime_.toMicroSecondsI();
+
+  return std::make_unique<TKeyEventT>(std::move(event));
 }
 
 } // namespace NSKernel

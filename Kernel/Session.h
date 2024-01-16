@@ -10,6 +10,8 @@
 namespace NSApplication {
 namespace NSKernel {
 
+using NFbsSession::TSessionT;
+
 class CSession : protected std::vector<CKeyEvent> {
   using CBase = std::vector<CKeyEvent>;
   using CIndex = int64_t;
@@ -28,6 +30,8 @@ public:
   using CBase::cbegin;
   using CBase::cend;
   using CBase::end;
+
+  static std::unique_ptr<TSessionT> createFbs(const CSession& from);
 
 private:
   friend boost::serialization::access;

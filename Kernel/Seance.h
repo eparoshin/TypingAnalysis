@@ -10,6 +10,8 @@
 namespace NSApplication {
 namespace NSKernel {
 
+using NFbsSession::TSeanceT;
+
 class CSeance : protected std::deque<CSession> {
   using CBase = std::deque<CSession>;
 
@@ -27,6 +29,8 @@ public:
   using CBase::end;
 
   using CBase::operator[];
+
+  static std::unique_ptr<TSeanceT> createFbs(const CSeance& from);
 
 private:
   friend boost::serialization::access;
